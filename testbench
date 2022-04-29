@@ -1,0 +1,27 @@
+module testbench ();
+	reg [31:0] I;
+	reg Z;
+	wire regW,ALUsrc,PCsrc,memRW,MemtoReg,sub;
+	wire [2:0] ALUop;
+	wire [1:0] IMMs;
+	
+	controlunit dut (I,Z,IMMs,regW,ALUsrc,ALUop,sub,PCsrc,memRW,MemtoReg);
+	
+	initial begin
+	I = 32'b0;
+	Z = 1'b0;
+	#10 I = 32'h00f00193; //addi x3, x0, 15
+	#10 I = 32'h00700213; //addi x4, x0, 7
+	#10 I = 32'h004182b3; //add  x5, x3, x4
+	#10 I = 32'h06502223; //sw   x5, 100(x0)
+	#10 I = 32'h05d22183; //lw   x3, 93(x4)
+	#10 I = 32'h00518063; //beq  x3,x5,0
+	Z = 1'b1;
+	
+	end
+	
+	initial begin
+		#1000 $stop;
+	end
+	
+endmodule
